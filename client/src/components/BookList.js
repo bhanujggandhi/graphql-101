@@ -11,7 +11,6 @@ const getBooksQuery = gql`
 `;
 
 const BookList = ({ data }) => {
-  console.log(data);
   return (
     <div>
       <ul id='book-list'>
