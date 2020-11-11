@@ -1,18 +1,19 @@
-import { graphql } from "react-apollo";
+import { useQuery } from "@apollo/client";
 import { getBooksQuery } from "../queries/queries";
 
-const BookList = ({ data }) => {
+const BookList = () => {
+  const { data, loading, error } = useQuery(getBooksQuery);
+  if (loading) return <p>Loading....</p>;
+  if (error) return <div>{error}</div>;
   return (
     <div>
       <ul id='book-list'>
-        {!data.loading ? (
-          data.books.map((book) => <li key={book.id}>{book.name}</li>)
-        ) : (
-          <p>Loading....</p>
-        )}
+        {data.books.map((book) => (
+          <li key={book.id}>{book.name}</li>
+        ))}
       </ul>
     </div>
   );
 };
 
-export default graphql(getBooksQuery)(BookList);
+export default BookList;

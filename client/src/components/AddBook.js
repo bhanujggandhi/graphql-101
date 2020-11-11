@@ -1,13 +1,12 @@
 import { useState } from "react";
-import { graphql } from "react-apollo";
-import { getAuthorsQuery } from "../queries/queries";
+import { useQuery, useMutation } from "@apollo/client";
+import { getAuthorsQuery, addBookMutation } from "../queries/queries";
 
-const AddBook = ({ data }) => {
+const AddBook = () => {
   const [name, setName] = useState("");
   const [genre, setGenre] = useState("");
   const [authorId, setAuthorId] = useState("");
-
-  console.log(data);
+  const { data, loading } = useQuery(getAuthorsQuery);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -43,7 +42,7 @@ const AddBook = ({ data }) => {
         <label>Author: </label>
         <select onChange={(e) => setAuthorId(e.target.value)}>
           <option value=''>Select Author</option>
-          {data.loading ? (
+          {loading ? (
             <option disabled>Loading Authors...</option>
           ) : (
             data.authors.map((author) => (
@@ -59,4 +58,4 @@ const AddBook = ({ data }) => {
   );
 };
 
-export default graphql(getAuthorsQuery)(AddBook);
+export default AddBook;
